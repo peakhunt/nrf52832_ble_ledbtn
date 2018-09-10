@@ -1,0 +1,45 @@
+https://github.com/bjornspockeli/custom_ble_service_example
+
+a) with old bluetooth dongle,
+   connect doesn't work. why???
+
+b) new bluetooth dongle,
+   connect works.
+
+https://github.com/pcborenstein/bluezDoc/wiki/hcitool-and-gatttool-example
+
+c) with whitelist added,
+   it doesn't get reconnedted without "connnect command".
+   why???
+   Looks like it's bluez problem. for Non HID devices, it doesn't work well.
+
+d) gatttool
+   but this works. make sure you delete all connections by bluetoothctl
+
+   a) sudo hciconfig hci0 down
+   b) sudo hciconfig hci0 up
+
+    ### for testing
+   1) sudo hcitool leinfo --random XXXX
+   2) sudo hcitool lecc --random XXXX
+   3) sudo hcitool ledc handle
+
+    ###
+   a) sudo gatttool -b DE:4F:1D:7D:FE:B1 -t random -I
+   b) connect
+   c) primary
+
+   XXX funny thing is the controller is not whitelisted in this way.
+   So let's do some study about BLE connection procedure
+
+e) ok with rfConnect android tool, I was able to access and
+   read/write values
+
+   what is CCCD? What is the proper way to handle that???
+
+f) CCCD
+  guess if there is no notify service, we better leave it as NULL
+
+  XXX FIXME
+
+g) BLE connection procedure

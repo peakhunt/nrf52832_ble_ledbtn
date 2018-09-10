@@ -1,0 +1,5 @@
+sudo hcitool lescan
+
+sudo gatttool -b <BLE ADDRESS> -I
+
+
