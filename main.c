@@ -30,6 +30,7 @@
 #include "nrf_log_default_backends.h"
 
 #include "ble_hkim_ledbtns.h"
+#include "led_control.h"
 
 #define DEVICE_NAME                     "LEDButton"                             /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "KongjaEx"                              /**< Manufacturer. Will be passed to Device Information Service. */
@@ -325,8 +326,8 @@ on_ble_hkim_leds_evt(ble_hkim_ledbtns_t* p_hkim_btnleds, ble_hkim_ledbtns_evt_t*
   switch(p_evt->evt_type)
   {
   case BLE_HKIM_LEDBTNS_EVT_LED_UPDATED:
-    // FIXME control led
     NRF_LOG_INFO("new LED status: %02x", p_hkim_btnleds->leds_status);
+    led_control_set(p_hkim_btnleds->leds_status);
     break;
 
   case BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_ENABLED:
@@ -826,6 +827,8 @@ main(void)
   advertising_init();
   conn_params_init();
   peer_manager_init();
+
+  led_control_init();
 
   // Start execution.
   NRF_LOG_INFO("Template example started.");
