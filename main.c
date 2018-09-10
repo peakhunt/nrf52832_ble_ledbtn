@@ -91,6 +91,8 @@ static pm_peer_id_t      m_peer_id;                                             
 static pm_peer_id_t      m_whitelist_peers[BLE_GAP_WHITELIST_ADDR_MAX_COUNT];       /**< List of peers currently in the whitelist. */
 static uint32_t          m_whitelist_peer_cnt;                                      /**< Number of peers currently in the whitelist. */
 
+static uint8_t           m_btn_noti_enabled = 0;
+
 
 static void advertising_start(bool erase_bonds);
 
@@ -309,12 +311,39 @@ nrf_qwr_error_handler(uint32_t nrf_error)
 static void
 on_ble_hkim_leds_evt(ble_hkim_ledbtns_t* p_hkim_btnleds, ble_hkim_ledbtns_evt_t* p_evt)
 {
-  //
-  // FIXME
-  //  Control LED based on the status
-  // 
-  NRF_LOG_INFO("============ %s =============", __func__);
-  NRF_LOG_INFO("value: %02x", p_hkim_btnleds->leds_status);
+  static const char* debug_str[] =
+  {
+    "BLE_HKIM_LEDBTNS_EVT_LED_UPDATED",
+    "BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_ENABLED",
+    "BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_DISABLED",
+    "BLE_HKIM_LEDBTNS_EVT_CONNECTED",
+    "BLE_HKIM_LEDBTNS_EVT_DISCONNECTED",
+  };
+
+  NRF_LOG_INFO("%s event: %s", __func__, debug_str[p_evt->evt_type]);
+
+  switch(p_evt->evt_type)
+  {
+  case BLE_HKIM_LEDBTNS_EVT_LED_UPDATED:
+    // FIXME control led
+    NRF_LOG_INFO("new LED status: %02x", p_hkim_btnleds->leds_status);
+    break;
+
+  case BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_ENABLED:
+    m_btn_noti_enabled = 1;
+    break;
+
+  case BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_DISABLED:
+    m_btn_noti_enabled = 0;
+    break;
+
+  case BLE_HKIM_LEDBTNS_EVT_CONNECTED:
+    break;
+
+  case BLE_HKIM_LEDBTNS_EVT_DISCONNECTED:
+    m_btn_noti_enabled = 0;
+    break;
+  }
 }
 
 static void
