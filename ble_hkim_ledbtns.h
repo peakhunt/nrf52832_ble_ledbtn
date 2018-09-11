@@ -71,7 +71,7 @@ struct ble_hkim_ledbtns_s
 uint32_t ble_hkim_ledbtns_init(ble_hkim_ledbtns_t* p_hkim_btnleds, ble_hkim_ledbtns_init_t const* p_hkim_leds_init);
 void ble_hkim_ledbtns_on_gatt_evt(ble_hkim_ledbtns_t* p_hkim_btnleds, nrf_ble_gatt_evt_t const * p_gatt_evt);
 void ble_hkim_ledbtns_on_ble_evt(ble_evt_t const* p_ble_evt, void*  p_context);
-int ble_hkim_ledbtns_update_btn(ble_hkim_ledbtns_t* p_hkim_btnleds, uint8_t status);
+int ble_hkim_ledbtns_update_btn(ble_hkim_ledbtns_t* p_hkim_btnleds, uint8_t status, bool noti);
 
 #ifdef __cplusplus
 }

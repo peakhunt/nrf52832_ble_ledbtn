@@ -43,3 +43,7 @@ f) CCCD
   XXX FIXME
 
 g) BLE connection procedure
+
+h) button test
+   read with noti disabled
+   read with noti enabled

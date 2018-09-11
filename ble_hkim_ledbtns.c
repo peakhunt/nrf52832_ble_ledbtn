@@ -296,7 +296,7 @@ ble_hkim_ledbtns_on_ble_evt(ble_evt_t const* p_ble_evt, void*  p_context)
 }
 
 int
-ble_hkim_ledbtns_update_btn(ble_hkim_ledbtns_t* p_hkim_btnleds, uint8_t status)
+ble_hkim_ledbtns_update_btn(ble_hkim_ledbtns_t* p_hkim_btnleds, uint8_t status, bool noti)
 {
   int err_code;
   ble_gatts_value_t   gatts_value;
@@ -320,11 +320,11 @@ ble_hkim_ledbtns_update_btn(ble_hkim_ledbtns_t* p_hkim_btnleds, uint8_t status)
     return err_code;
   }
 
-  //
-  // notify if connected
-  // ble_hkim_ledbtns_update_btn is called by app only when
-  // notification is enabled!!!
-  //
+  if(!noti)
+  {
+    return err_code;
+  }
+
   if(p_hkim_btnleds->conn_handle != BLE_CONN_HANDLE_INVALID)
   {
     ble_gatts_hvx_params_t hvx_params;

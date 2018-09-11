@@ -31,6 +31,7 @@
 
 #include "ble_hkim_ledbtns.h"
 #include "led_control.h"
+#include "btn_control.h"
 
 #define DEVICE_NAME                     "LEDButton"                             /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME               "KongjaEx"                              /**< Manufacturer. Will be passed to Device Information Service. */
@@ -69,7 +70,7 @@
 
 NRF_BLE_GATT_DEF(m_gatt);                                                       /**< GATT module instance. */
 NRF_BLE_QWR_DEF(m_qwr);                                                         /**< Context for the Queued Write module.*/
-BLE_HKIM_LEDBTNS_DEF(m_leds);
+BLE_HKIM_LEDBTNS_DEF(m_ledbtns);
 
 BLE_ADVERTISING_DEF(m_advertising);                                             /**< Advertising module instance. */
 
@@ -92,7 +93,7 @@ static pm_peer_id_t      m_peer_id;                                             
 static pm_peer_id_t      m_whitelist_peers[BLE_GAP_WHITELIST_ADDR_MAX_COUNT];       /**< List of peers currently in the whitelist. */
 static uint32_t          m_whitelist_peer_cnt;                                      /**< Number of peers currently in the whitelist. */
 
-static uint8_t           m_btn_noti_enabled = 0;
+static bool               m_btn_noti_enabled = false;
 
 
 static void advertising_start(bool erase_bonds);
@@ -331,18 +332,18 @@ on_ble_hkim_leds_evt(ble_hkim_ledbtns_t* p_hkim_btnleds, ble_hkim_ledbtns_evt_t*
     break;
 
   case BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_ENABLED:
-    m_btn_noti_enabled = 1;
+    m_btn_noti_enabled = true;
     break;
 
   case BLE_HKIM_LEDBTNS_EVT_BTN_NOTIFICATION_DISABLED:
-    m_btn_noti_enabled = 0;
+    m_btn_noti_enabled = false;
     break;
 
   case BLE_HKIM_LEDBTNS_EVT_CONNECTED:
     break;
 
   case BLE_HKIM_LEDBTNS_EVT_DISCONNECTED:
-    m_btn_noti_enabled = 0;
+    m_btn_noti_enabled = false;
     break;
   }
 }
@@ -370,7 +371,7 @@ services_init(void)
   BLE_GAP_CONN_SEC_MODE_SET_OPEN(&ledbtns_init.hkim_btns_value_char_attr_md.read_perm);
   BLE_GAP_CONN_SEC_MODE_SET_OPEN(&ledbtns_init.hkim_btns_value_char_attr_md.write_perm);
 
-  err_code = ble_hkim_ledbtns_init(&m_leds, &ledbtns_init);
+  err_code = ble_hkim_ledbtns_init(&m_ledbtns, &ledbtns_init);
   APP_ERROR_CHECK(err_code);
 }
 
@@ -639,7 +640,7 @@ delete_bonds(void)
 static void
 scheduler_init(void)
 {
-  // APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
+  APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
 }
 
 static void
@@ -745,7 +746,7 @@ power_management_init(void)
 static void
 idle_state_handle(void)
 {
-  //app_sched_execute();
+  app_sched_execute();
   if (NRF_LOG_PROCESS() == false)
   {
     nrf_pwr_mgmt_run();
@@ -806,10 +807,18 @@ advertising_start(bool erase_bonds)
   }
 }
 
+static void
+btn_control_state_changed(uint8_t state)
+{
+  NRF_LOG_INFO("%s called", __func__);
+  ble_hkim_ledbtns_update_btn(&m_ledbtns, state, m_btn_noti_enabled);
+}
+
 int
 main(void)
 {
   bool erase_bonds;
+  uint8_t   btn_state;
 
   // Initialize.
   log_init();
@@ -829,6 +838,8 @@ main(void)
   peer_manager_init();
 
   led_control_init();
+  btn_state = btn_control_init(btn_control_state_changed);
+  ble_hkim_ledbtns_update_btn(&m_ledbtns, btn_state, false);
 
   // Start execution.
   NRF_LOG_INFO("Template example started.");
