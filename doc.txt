@@ -42,8 +42,17 @@ f) CCCD
 
   XXX FIXME
 
-g) BLE connection procedure
 
-h) button test
-   read with noti disabled
-   read with noti enabled
+i) linux doc again
+https://docs.ubuntu.com/core/en/stacks/bluetooth/bluez/docs/reference/gatt-services
+
+   on rapsberry pi
+
+   a) sudo bluetoothctl
+   b) scan on
+   c) connect XXXX
+   e) list-attributes
+   f) select-attribute /org/bluez/hci0/dev_DE_4F_1D_7D_FE_B1/service000b/char000c
+   g) read
+   h) write 0xaa
+   i) notify on
