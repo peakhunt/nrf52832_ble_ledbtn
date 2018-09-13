@@ -12,7 +12,10 @@
 extern "C" {
 #endif
 
-// f364adc9-b000-4042-ba50-05ca45bf8abc
+//
+// base UUID is in this format // 4A98xxxx-1CC4-E7C1-C757-F1267DD021E8.
+// so xxxx is replaced by 16bit UUID for whatever item you wanna represent.
+//
 #define BLE_UUID_HKIM_LEDBTN_BASE             {0xBC, 0x8A, 0xBF, 0x45, 0xCA, 0x05, 0x50, 0xBA, \
                                               0x40, 0x42, 0xB0, 0x00, 0xC9, 0xAD, 0x64, 0xF3}
 
