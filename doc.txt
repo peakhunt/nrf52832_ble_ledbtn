@@ -83,3 +83,16 @@ https://www.slideshare.net/yeokm1/introduction-to-bluetooth-low-energy
 # awesome introduction to BLE
 #
 http://microchipdeveloper.com/wireless:ble-phy-layer
+
+#
+# gap security procedure
+#
+https://www.digikey.com/eewiki/display/Wireless/A+Basic+Introduction+to+BLE+Security
+
+#
+# Bluetooth Kernel Hacking Project!
+#
+a) kernel bluetooth core
+b) kernel HCI
+c) kernel L2CAP
+d) kernel MGMT

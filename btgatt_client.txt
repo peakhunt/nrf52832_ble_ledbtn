@@ -1,0 +1,65 @@
+btgatt-client -d DE:4F:1D:7D:FE:B1 -t random
+
+[GATT client]# services
+
+service - start: 0x0001, end: 0x0009, type: primary, uuid: 00001800-0000-1000-8000-00805f9b34fb
+	  charac - start: 0x0002, value: 0x0003, props: 0x0a, ext_props: 0x0000, uuid: 00002a00-0000-1000-8000-00805f9b34fb
+	  charac - start: 0x0004, value: 0x0005, props: 0x02, ext_props: 0x0000, uuid: 00002a01-0000-1000-8000-00805f9b34fb
+	  charac - start: 0x0006, value: 0x0007, props: 0x02, ext_props: 0x0000, uuid: 00002a04-0000-1000-8000-00805f9b34fb
+	  charac - start: 0x0008, value: 0x0009, props: 0x02, ext_props: 0x0000, uuid: 00002aa6-0000-1000-8000-00805f9b34fb
+
+service - start: 0x000a, end: 0x000a, type: primary, uuid: 00001801-0000-1000-8000-00805f9b34fb
+
+service - start: 0x000b, end: 0xffff, type: primary, uuid: f3641400-00b0-4240-ba50-05ca45bf8abc
+	  charac - start: 0x000c, value: 0x000d, props: 0x0a, ext_props: 0x0000, uuid: f3641401-00b0-4240-ba50-05ca45bf8abc
+	  charac - start: 0x000e, value: 0x000f, props: 0x12, ext_props: 0x0000, uuid: f3641402-00b0-4240-ba50-05ca45bf8abc
+		  descr - handle: 0x0010, uuid: 00002902-0000-1000-8000-00805f9b34fb
+
+====== value handle ======
+0x000d : led
+0x000f : btn
+
+[GATT client]# read-value 0x000d 
+[GATT client]# 
+Read value (1 bytes): 00
+
+GATT client]# write-value 0x000d 0x0f
+[GATT client]# 
+Write successful
+
+[GATT client]# register-notify 0x000f
+Registering notify handler with id: 1
+[GATT client]# Registered notify handler!
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 01
+[GATT client]#
+	Handle Value Not/Ind: 0x000f - (1 bytes): 00
+[GATT client]#
